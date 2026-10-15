@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Village Updates</title>
+  <style>
+    body { font-family: Arial; background: #eef2f5; margin: 0; }
+    .container { width: 60%; margin: 30px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    h2 { text-align: center; color: #333; }
+    .update { padding: 15px; border-bottom: 1px solid #ddd; }
+    .update:last-child { border-bottom: none; }
+    .update h3 { margin: 0; color: #007bff; }
+    .update p { margin: 5px 0; color: #555; }
+    .date { font-size: 12px; color: #999; }
+    button { margin-top: 20px; padding: 10px 15px; background: #28a745; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #218838; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Village Updates</h2>
+    <div id="updatesList"></div>
+    <button onclick="location.href='index.html'">🏠 Back to Home</button>
+  </div>
+
+  <script>
+    function loadNotices() {
+      let notices = JSON.parse(localStorage.getItem("villageNotices")) || [];
+      let container = document.getElementById("updatesList");
+      container.innerHTML = "";
+
+      if(notices.length === 0){
+        container.innerHTML = "<p>No updates available.</p>";
+        return;
+      }
+
+      notices.forEach(n => {
+        let div = document.createElement("div");
+        div.className = "update";
+        div.innerHTML = `<h3>${n.title}</h3><p>${n.content}</p><p class="date">Posted on: ${n.date}</p>`;
+        container.appendChild(div);
+      });
+    }
+
+    loadNotices();
+  </script>
+</body>
+</html>

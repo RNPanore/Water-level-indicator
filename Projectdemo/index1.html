@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Village Citizen Portal</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; }
+    .header { background: #0056b3; color: #fff; text-align: center; padding: 15px; }
+    .buttons { display: flex; flex-direction: column; align-items: center; margin: 20px; gap: 15px; }
+    .btn { width: 80%; padding: 15px; font-size: 16px; border: none; border-radius: 8px; color: #fff; cursor: pointer; }
+    .register { background: #f39c12; }
+    .track { background: #007bff; }
+    .admin { background: #6c757d; }
+    .btn:hover { opacity: 0.9; }
+    .notices { width: 90%; margin: 20px auto; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .notice-item { border-bottom: 1px solid #ddd; padding: 10px; }
+    .notice-item:last-child { border-bottom: none; }
+    .notice-item h3 { margin: 0; color: #007bff; }
+    .notice-item p { margin: 5px 0; }
+    .date { font-size: 12px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="header"><h2>Smart Village Citizen Portal</h2></div>
+
+  <div class="buttons">
+    <button class="btn register" onclick="location.href='register1.html'">⚠️ Register Complaint</button>
+    <button class="btn track" onclick="location.href='track1.html'">🔍 Track Complaints</button>
+    <button class="btn admin" onclick="location.href='login1.html'">👨‍💼 Admin Login</button>
+  </div>
+
+  <div class="notices">
+    <h3>Village Notices</h3>
+    <div id="homeNotices"></div>
+  </div>
+
+  <script>
+    function loadHomeNotices() {
+      let notices = JSON.parse(localStorage.getItem("villageNotices")) || [];
+      let container = document.getElementById("homeNotices");
+      container.innerHTML = "";
+
+      if(notices.length === 0){
+        container.innerHTML = "<p>No current notices.</p>";
+        return;
+      }
+
+      const today = new Date();
+
+      notices.forEach(n => {
+        let start = n.startDate ? new Date(n.startDate) : null;
+        let end = n.endDate ? new Date(n.endDate) : null;
+
+        if((!start || today >= start) && (!end || today <= end)){
+          let div = document.createElement("div");
+          div.className = "notice-item";
+          div.innerHTML = `<h3>${n.title}</h3>
+                           <p>${n.content}</p>
+                           <p class="date">Valid: ${n.startDate || "N/A"} to ${n.endDate || "N/A"} | Posted: ${n.date}</p>`;
+          container.appendChild(div);
+        }
+      });
+
+      if(container.innerHTML === ""){
+        container.innerHTML = "<p>No active notices at this time.</p>";
+      }
+    }
+
+    loadHomeNotices();
+  </script>
+</body>
+</html>

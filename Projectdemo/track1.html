@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Track Complaint</title>
+  <style>
+    body { font-family: Arial; background: #eef2f5; }
+    .container { width: 40%; margin: 50px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    h2 { text-align: center; }
+    input { width: 100%; padding: 8px; margin-top: 10px; }
+    button { margin-top: 15px; padding: 10px; background: #007bff; color: #fff; border: none; border-radius: 4px; }
+    button:hover { background: #0056b3; }
+    .status { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Track Complaint</h2>
+    <input type="text" id="complaintId" placeholder="Enter Complaint ID">
+    <button onclick="trackComplaint()">Track</button>
+    <div class="status" id="statusResult"></div>
+    <button onclick="location.href='index1.html'">🏠 Back to Home</button>
+  </div>
+
+  <script>
+    function trackComplaint(){
+      let id = document.getElementById("complaintId").value.trim();
+      let complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+      let found = complaints.find(c => c.id === id);
+
+      if(!found){
+        document.getElementById("statusResult").innerText = "Complaint not found.";
+      } else {
+        document.getElementById("statusResult").innerText =
+          `Complaint ${found.id} (${found.category}) Status: ${found.status}`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register Complaint</title>
+  <style>
+    body { font-family: Arial; background: #eef2f5; }
+    .container { width: 50%; margin: 40px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    h2 { text-align: center; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    button { margin-top: 15px; padding: 10px; background: #28a745; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #218838; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Register Complaint</h2>
+    <form id="complaintForm">
+      <label>Name:</label>
+      <input type="text" name="name" required>
+      <label>Mobile:</label>
+      <input type="text" name="mobile" required>
+      <label>Category:</label>
+      <select name="category" required>
+        <option value="electricity">Electricity</option>
+        <option value="water">Water</option>
+        <option value="roads">Roads</option>
+        <option value="waste">Waste Management</option>
+      </select>
+      <label>Description:</label>
+      <textarea name="description" rows="4" required></textarea>
+      <label>Upload Files:</label>
+      <input type="file" name="files" multiple>
+      <button type="submit">Submit Complaint</button>
+    </form>
+    <p id="responseMsg"></p>
+    <button onclick="location.href='index1.html'">🏠 Back to Home</button>
+  </div>
+
+  <script>
+    document.getElementById("complaintForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      const name = e.target.name.value;
+      const mobile = e.target.mobile.value;
+      const category = e.target.category.value;
+      const description = e.target.description.value;
+
+      const complaintId = "CMP" + Math.floor(Math.random()*10000);
+
+      const complaint = { id: complaintId, name, mobile, category, description, status: "Pending" };
+
+      let complaints = JSON.parse(localStorage.getItem("complaints")) || [];
+      complaints.push(complaint);
+      localStorage.setItem("complaints", JSON.stringify(complaints));
+
+      document.getElementById("responseMsg").innerText =
+        "Complaint submitted successfully! Your Complaint ID is: " + complaintId;
+
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
